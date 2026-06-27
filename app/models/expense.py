@@ -9,9 +9,9 @@ class Expense(BaseModel):
     description = Column(String)
     date = Column(DateTime)
     
-    user_id = Column(Integer, ForeignKey="users.id")
-    category_id = Column(Integer, ForeignKey="categories.id")
-    account_id = Column(Integer, ForeignKey="accounts.id")
+    user_id = Column(Integer, ForeignKey("users.id"))
+    category_id = Column(Integer, ForeignKey("categories.id"))
+    account_id = Column(Integer, ForeignKey("accounts.id"))
 
     user = relationship("User", back_populates="expenses")
     category = relationship("Category", back_populates="expenses")

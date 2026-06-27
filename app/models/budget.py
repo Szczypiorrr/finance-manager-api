@@ -8,8 +8,8 @@ class Budget(BaseModel):
     limit_amount = Column(Float)
     month = Column(Date)
 
-    user_id = Column(Integer, ForeignKey="users.id")
-    category_id = Column(Integer, ForeignKey="categories.id")
+    user_id = Column(Integer, ForeignKey("users.id"))
+    category_id = Column(Integer, ForeignKey("categories.id"))
 
     user = relationship("User", back_populates="budgets")
     category = relationship("Category", back_populates="budgets")

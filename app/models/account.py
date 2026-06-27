@@ -7,7 +7,7 @@ class Account(BaseModel):
 
     name = Column(String)
     balance = Column(Float)
-    user_id = Column(Integer, ForeignKey="users.id")
+    user_id = Column(Integer, ForeignKey("users.id"))
 
     user = relationship("User", back_populates="accounts")
     expenses = relationship("Expense", back_populates="account")

@@ -9,6 +9,6 @@ class Goal(BaseModel):
     current_amount = Column(Integer)
     name = Column(String)
     
-    user_id = Column(Integer, ForeignKey="users.id") 
+    user_id = Column(Integer, ForeignKey("users.id")) 
 
     user = relationship("User", back_populates="goals")

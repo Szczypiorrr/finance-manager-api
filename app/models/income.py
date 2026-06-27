@@ -9,6 +9,6 @@ class Income(BaseModel):
     source = Column(String)
     date = Column(DateTime)
 
-    user_id = Column(Integer, ForeignKey="users.id")
+    user_id = Column(Integer, ForeignKey("users.id"))
 
     user = relationship("User", back_populates="income")
