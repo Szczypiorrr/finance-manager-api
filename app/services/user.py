@@ -42,13 +42,17 @@ def delete_user(user_id: int, db: Session):
     db.commit()
     return
 
-def update_user(user_id: int, new_username: str, db: Session):
+def update_user(user_id: int, username: str, db: Session):
     user = get_user_by_id(user_id=user_id, db=db)
 
-    if get_user_by_username(username=new_username, db=db):
+    if user.username == username:
+        return user
+
+    if get_user_by_username(username=username, db=db):
         raise UserAlreadyExists()
 
-    user.username = new_username
+    if username:
+        user.username = username
 
     db.commit()
     db.refresh(user)
