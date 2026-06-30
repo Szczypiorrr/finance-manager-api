@@ -18,8 +18,12 @@ class InvalidAmount(Exception):
 class InvalidTransfer(Exception):
     pass
 
-def get_accounts(db: Session):
-    return db.query(Account).all()
+def get_accounts(db: Session, user_id: int = None, limit: int = 10, offset: int = 0):
+    query = db.query(Account)
+    if user_id is not None:
+        query = query.where(Account.user_id == user_id)
+
+    return query.limit(limit).offset(offset).all()
 
 def get_account_by_id(account_id: int, db: Session):
     account = db.query(Account).where(Account.id == account_id).first()
