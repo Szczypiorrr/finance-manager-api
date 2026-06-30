@@ -7,8 +7,8 @@ class Income(BaseModel):
 
     amount = Column(Float)
     source = Column(String)
-    date = Column(DateTime)
+    created_at = Column(DateTime)
 
-    user_id = Column(Integer, ForeignKey("users.id"))
+    account_id = Column(Integer, ForeignKey("accounts.id"))
 
-    user = relationship("User", back_populates="income")
+    account = relationship("Account", back_populates="income")
