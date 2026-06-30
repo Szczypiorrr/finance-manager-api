@@ -11,8 +11,8 @@ from datetime import datetime
 router = APIRouter(tags=["Expenses"], prefix="/expenses")
 
 @router.get("/", response_model=list[ExpenseResponse])
-def read_expenses(offset: int = 0, limit: int = Query(10, le=100), user_id: int | None = None, category_id: int | None = None, account_id: int | None = None, start_date: datetime | None = None, end_date: datetime | None = None, db: Session = Depends(get_db)):
-    return expense_service.get_expenses(limit=limit, offset=offset, user_id=user_id, category_id=category_id, account_id=account_id, start_date=start_date, end_date=end_date, db=db)
+def read_expenses(offset: int = 0, limit: int = Query(10, le=100), account_id: int | None = None, category_id: int | None = None, start_date: datetime | None = None, end_date: datetime | None = None, db: Session = Depends(get_db)):
+    return expense_service.get_expenses(limit=limit, offset=offset, account_id=account_id, category_id=category_id, start_date=start_date, end_date=end_date, db=db)
 
 @router.get("/{expense_id}", response_model=ExpenseResponse)
 def read_expense(expense_id: int, db: Session = Depends(get_db)):
