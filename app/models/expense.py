@@ -7,7 +7,7 @@ class Expense(BaseModel):
 
     amount = Column(Float)
     description = Column(String)
-    date = Column(DateTime)
+    created_at = Column(DateTime)
     
     user_id = Column(Integer, ForeignKey("users.id"))
     category_id = Column(Integer, ForeignKey("categories.id"))
