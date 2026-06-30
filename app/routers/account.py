@@ -3,7 +3,7 @@ from schemas.account import AccountResponse, AccountCreate, AccountUpdate, Accou
 from sqlalchemy.orm import Session
 from core.database import get_db
 import services.account as account_service
-import services.user as account_user
+import services.user as user_service
 
 router = APIRouter(tags=["Accounts"], prefix="/accounts")
 
@@ -22,7 +22,7 @@ def read_account(account_id: int, db: Session = Depends(get_db)):
 def create_account(account: AccountCreate, db: Session = Depends(get_db)):
     try:
         return account_service.create_account(account=account, db=db)
-    except account_user.UserNotFound:
+    except user_service.UserNotFound:
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="User with this ID not found")
     except account_service.AccountAlreadyExists:
         raise HTTPException(status_code=status.HTTP_409_CONFLICT, detail="Account with this name already exists")
