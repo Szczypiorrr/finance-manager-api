@@ -2,7 +2,6 @@ from pydantic import BaseModel
 
 class GoalBase(BaseModel):
     target_amount: int
-    current_amount: int
     name: str
 
 class GoalCreate(GoalBase):
@@ -10,10 +9,10 @@ class GoalCreate(GoalBase):
 
 class GoalUpdate(BaseModel):
     target_amount: int | None = None
-    current_amount: int | None = None
     name: str | None = None
 
 class GoalResponse(GoalBase):
+    current_amount: int
     id: int
     user_id: int
     
