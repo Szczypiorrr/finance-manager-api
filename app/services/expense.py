@@ -1,7 +1,6 @@
 from sqlalchemy.orm import Session
 from models.expense import Expense
 from schemas.expense import ExpenseCreate, ExpenseUpdate
-from services.user import get_user_by_id
 from services.account import get_account_by_id
 from services.category import get_category_by_id
 from datetime import datetime
@@ -9,18 +8,14 @@ from datetime import datetime
 class ExpenseNotFound(Exception):
     pass
 
-def get_expenses(db: Session, user_id: int | None = None, category_id: int | None = None, account_id: int | None = None, start_date: datetime | None = None, end_date: datetime | None = None, limit: int = 10, offset: int = 0):
+def get_expenses(db: Session, account_id: int | None = None, category_id: int | None = None, start_date: datetime | None = None, end_date: datetime | None = None, limit: int = 10, offset: int = 0):
     query = db.query(Expense)
-
-
-    if user_id is not None:
-        query = query.where(Expense.user_id == user_id)
-
-    if category_id is not None:
-        query = query.where(Expense.category_id == category_id)
 
     if account_id is not None:
         query = query.where(Expense.account_id == account_id)
+
+    if category_id is not None:
+        query = query.where(Expense.category_id == category_id)
 
     if start_date is not None:
         query = query.where(Expense.created_at >= start_date)
@@ -41,15 +36,12 @@ def get_expense_by_id(expense_id: int, db: Session):
     return expense
 
 def create_expense(expense: ExpenseCreate, db: Session):
-    get_user_by_id(user_id=expense.user_id, db=db)
-
     get_account_by_id(account_id=expense.account_id, db=db)
 
     expense_db = Expense(
         amount=expense.amount,
         description=expense.description,
         created_at=datetime.now(),
-        user_id=expense.user_id,
         account_id=expense.account_id,
         category_id=expense.category_id
     )
