@@ -6,7 +6,6 @@ class ExpenseBase(BaseModel):
     description: str
 
 class ExpenseCreate(ExpenseBase):
-    user_id: int
     category_id: int
     account_id: int
 
@@ -19,7 +18,6 @@ class ExpenseUpdate(BaseModel):
 class ExpenseResponse(ExpenseBase):
     created_at: datetime
     id: int
-    user_id: int
     category_id: int
     account_id: int
 
