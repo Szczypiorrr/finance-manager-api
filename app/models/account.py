@@ -9,5 +9,7 @@ class Account(BaseModel):
     balance = Column(Float)
     user_id = Column(Integer, ForeignKey("users.id"))
 
+
+    income = relationship("Income", back_populates="account")
     user = relationship("User", back_populates="accounts")
     expenses = relationship("Expense", back_populates="account")
