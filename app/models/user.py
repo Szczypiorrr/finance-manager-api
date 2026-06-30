@@ -9,7 +9,5 @@ class User(BaseModel):
     username = Column(String)
 
     accounts = relationship("Account", back_populates="user")
-    expenses = relationship("Expense", back_populates="user")
-    income = relationship("Income", back_populates="user")
     goals = relationship("Goal", back_populates="user")
     budgets = relationship("Budget", back_populates="user")
