@@ -8,8 +8,8 @@ import services.user as user_service
 router = APIRouter(tags=["Accounts"], prefix="/accounts")
 
 @router.get("/", response_model=list[AccountResponse])
-def read_accounts(db: Session = Depends(get_db)):
-    return account_service.get_accounts(db=db)
+def read_accounts(limit: int = 10, offset: int = 0, user_id: int = None, db: Session = Depends(get_db)):
+    return account_service.get_accounts(db=db, user_id=user_id, limit=limit, offset=offset)
 
 @router.get("/{account_id}", response_model=AccountResponse)
 def read_account(account_id: int, db: Session = Depends(get_db)):
