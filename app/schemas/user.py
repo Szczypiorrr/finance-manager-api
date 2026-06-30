@@ -12,7 +12,7 @@ class UserCreate(UserBase):
     pass
 
 class UserUpdate(BaseModel):
-    new_username: str
+    username: str
 
 class UserResponse(UserBase):
     id: int
