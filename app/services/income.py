@@ -3,12 +3,10 @@ from schemas.income import IncomeCreate, IncomeUpdate
 from sqlalchemy.orm import Session
 from services.account import get_account_by_id
 from datetime import datetime
+from helpers.datetime import current_datetime
+from helpers.validators import validate_amount
+from exceptions.income_exceptions import IncomeNotFound
 
-class IncomeNotFound(Exception):
-    pass
-
-class InvalidAmount(Exception):
-    pass
 
 def get_incomes(db: Session, account_id: int | None = None, start_date: datetime | None = None, end_date: datetime | None = None, limit: int = 10, offset: int = 0):
     query = db.query(Income)
@@ -38,7 +36,7 @@ def create_income(income: IncomeCreate, db: Session):
     income_db = Income(
         amount=income.amount,
         source=income.source,
-        created_at=datetime.now(),
+        created_at=current_datetime(),
         account_id=income.account_id
     )
 
@@ -60,9 +58,7 @@ def update_income(income_id: int, income_update: IncomeUpdate, db: Session):
     income = get_income_by_id(income_id=income_id, db=db)
 
     if income_update.amount is not None:
-        if income_update.amount <= 0:
-            raise InvalidAmount()
-        
+        validate_amount(income_update.amount)
         income.amount = income_update.amount
 
     if income_update.source is not None:

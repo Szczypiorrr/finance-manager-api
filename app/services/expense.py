@@ -4,9 +4,10 @@ from schemas.expense import ExpenseCreate, ExpenseUpdate
 from services.account import get_account_by_id
 from services.category import get_category_by_id
 from datetime import datetime
+from helpers.datetime import current_datetime
+from helpers.validators import validate_amount
+from exceptions.expense_exceptions import ExpenseNotFound
 
-class ExpenseNotFound(Exception):
-    pass
 
 def get_expenses(db: Session, account_id: int | None = None, category_id: int | None = None, start_date: datetime | None = None, end_date: datetime | None = None, limit: int = 10, offset: int = 0):
     query = db.query(Expense)
@@ -41,7 +42,7 @@ def create_expense(expense: ExpenseCreate, db: Session):
     expense_db = Expense(
         amount=expense.amount,
         description=expense.description,
-        created_at=datetime.now(),
+        created_at=current_datetime(),
         account_id=expense.account_id,
         category_id=expense.category_id
     )
@@ -64,6 +65,7 @@ def update_expense(expense_id: int, expense_update: ExpenseUpdate, db: Session):
     expense = get_expense_by_id(expense_id=expense_id, db=db)
 
     if expense_update.amount is not None:
+        validate_amount(expense_update.amount)
         expense.amount = expense_update.amount
 
     if expense_update.description is not None:

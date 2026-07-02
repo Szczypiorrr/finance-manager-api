@@ -2,18 +2,8 @@ from sqlalchemy.orm import Session
 from services.user import get_user_by_id
 from models.goal import Goal
 from schemas.goal import GoalCreate, GoalUpdate
-
-class GoalNotFound(Exception):
-    pass
-
-class GoalAlreadyExists(Exception):
-    pass
-
-class InvalidAmount(Exception):
-    pass
-
-class GoalTargetAmountExceeded(Exception):
-    pass
+from helpers.validators import validate_amount
+from exceptions.goal_exceptions import GoalNotFound, GoalAlreadyExists, GoalTargetAmountExceeded
 
 def get_goals(db: Session, user_id: int = None, limit: int = 10, offset: int = 0):
     query = db.query(Goal)
@@ -37,8 +27,7 @@ def get_goal_by_name(name: str, db: Session):
 def create_goal(goal: GoalCreate, db: Session):
     get_user_by_id(user_id=goal.user_id, db=db)
 
-    if goal.target_amount <= 0:
-        raise InvalidAmount()
+    validate_amount(goal.target_amount)
 
     if get_goal_by_name(name=goal.name, db=db):
         raise GoalAlreadyExists()
@@ -76,8 +65,7 @@ def update_goal(goal_id: int, goal_update: GoalUpdate, db: Session):
         goal.name = goal_update.name
 
     if goal_update.target_amount is not None:
-        if goal_update.target_amount <= 0:
-            raise InvalidAmount()
+        validate_amount(goal_update.target_amount)
         goal.target_amount = goal_update.target_amount
 
 
@@ -92,8 +80,7 @@ def deposit_to_goal(goal_id: int, user_id: int, amount: int, db: Session):
     if goal.user_id != user_id:
         raise GoalNotFound()
 
-    if amount <= 0:
-        raise InvalidAmount()
+    validate_amount(amount)
 
     if goal.current_amount + amount > goal.target_amount:
         raise GoalTargetAmountExceeded()

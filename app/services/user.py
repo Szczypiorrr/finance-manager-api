@@ -1,11 +1,6 @@
 from models.user import User
 from sqlalchemy.orm import Session
-
-class UserNotFound(Exception):
-    pass
-
-class UserAlreadyExists(Exception):
-    pass
+from exceptions.user_exceptions import UserNotFound, UserAlreadyExists
 
 def get_users(db: Session):
     return db.query(User).all()

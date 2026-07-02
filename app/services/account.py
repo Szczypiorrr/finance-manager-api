@@ -2,21 +2,9 @@ from models.account import Account
 from schemas.account import AccountUpdate
 from sqlalchemy.orm import Session
 from services.user import get_user_by_id
+from helpers.validators import validate_amount
+from exceptions.account_exceptions import AccountNotFound, AccountAlreadyExists, InsufficientFunds, InvalidTransfer
 
-class AccountNotFound(Exception):
-    pass
-
-class AccountAlreadyExists(Exception):
-    pass
-
-class InsufficientFunds(Exception):
-    pass
-
-class InvalidAmount(Exception):
-    pass
-
-class InvalidTransfer(Exception):
-    pass
 
 def get_accounts(db: Session, user_id: int = None, limit: int = 10, offset: int = 0):
     query = db.query(Account)
@@ -78,8 +66,7 @@ def update_account(account_id: int, account_update: AccountUpdate, db: Session):
 def deposit_to_account(account_id: int, amount: float, db: Session):
     account = get_account_by_id(account_id=account_id, db=db)
 
-    if amount <= 0:
-        raise InvalidAmount()
+    validate_amount(amount)
 
     account.balance += amount
 
@@ -91,8 +78,7 @@ def deposit_to_account(account_id: int, amount: float, db: Session):
 def withdraw_from_account(account_id: int, amount: float, db: Session):
     account = get_account_by_id(account_id=account_id, db=db)
 
-    if amount <= 0:
-        raise InvalidAmount()
+    validate_amount(amount)
 
     if account.balance < amount:
         raise InsufficientFunds()
@@ -105,8 +91,7 @@ def withdraw_from_account(account_id: int, amount: float, db: Session):
     return account
 
 def transfer_between_accounts(sender_id: int, receiver_id: int, amount: float, db: Session):
-    if amount <= 0:
-        raise InvalidAmount()
+    validate_amount(amount)
 
     sender_account = get_account_by_id(account_id=sender_id, db=db)
     receiver_account = get_account_by_id(account_id=receiver_id, db=db)

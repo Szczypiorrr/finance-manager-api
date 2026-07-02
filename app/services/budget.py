@@ -4,16 +4,9 @@ from services.user import get_user_by_id
 from services.category import get_category_by_id
 from models.budget import Budget
 from schemas.budget import BudgetCreate, BudgetUpdate
-from datetime import datetime
-
-class BudgetNotFound(Exception):
-    pass
-
-class BudgetAlreadyExists(Exception):
-    pass
-
-class InvalidAmount(Exception):
-    pass
+from helpers.datetime import current_month, current_year
+from helpers.validators import validate_amount
+from exceptions.budget_exceptions import BudgetNotFound, BudgetAlreadyExists
 
 def get_budgets(db: Session, user_id: int = None, category_id: int = None, limit: int = 10, offset: int = 0):
     query = db.query(Budget)
@@ -41,13 +34,13 @@ def create_budget(budget: BudgetCreate, db: Session):
     get_user_by_id(user_id=budget.user_id, db=db)
     get_category_by_id(category_id=budget.category_id, db=db)
 
-    if get_budget_by_period(user_id=budget.user_id, category_id=budget.category_id, month=datetime.now().month, year=datetime.now().year, db=db):
+    if get_budget_by_period(user_id=budget.user_id, category_id=budget.category_id, month=current_month(), year=current_year(), db=db):
         raise BudgetAlreadyExists()
 
     budget_db = Budget(
         limit_amount=budget.limit_amount,
-        month=datetime.now().month,
-        year=datetime.now().year,
+        month=current_month(),
+        year=current_year(),
         user_id=budget.user_id,
         category_id=budget.category_id
     )
@@ -69,8 +62,7 @@ def delete_budget(budget_id: int, db: Session):
 def update_budget(budget_id: int, budget_update: BudgetUpdate, db: Session):
     budget = get_budget_by_id(budget_id=budget_id, db=db)
 
-    if budget_update.limit_amount <= 0:
-        raise InvalidAmount()
+    validate_amount(budget_update.limit_amount)
 
     if budget.limit_amount == budget_update.limit_amount:
         return budget
