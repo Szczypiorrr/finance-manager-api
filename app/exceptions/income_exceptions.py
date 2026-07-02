@@ -1,0 +1,2 @@
+class IncomeNotFound(Exception):
+    pass
