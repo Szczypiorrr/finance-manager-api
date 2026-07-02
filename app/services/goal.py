@@ -12,6 +12,9 @@ class GoalAlreadyExists(Exception):
 class InvalidAmount(Exception):
     pass
 
+class GoalTargetAmountExceeded(Exception):
+    pass
+
 def get_goals(db: Session, user_id: int = None, limit: int = 10, offset: int = 0):
     query = db.query(Goal)
 
@@ -77,6 +80,25 @@ def update_goal(goal_id: int, goal_update: GoalUpdate, db: Session):
             raise InvalidAmount()
         goal.target_amount = goal_update.target_amount
 
+
+    db.commit()
+    db.refresh(goal)
+
+    return goal
+
+def deposit_to_goal(goal_id: int, user_id: int, amount: int, db: Session):
+    goal = get_goal_by_id(goal_id=goal_id, db=db)
+
+    if goal.user_id != user_id:
+        raise GoalNotFound()
+
+    if amount <= 0:
+        raise InvalidAmount()
+
+    if goal.current_amount + amount > goal.target_amount:
+        raise GoalTargetAmountExceeded()
+
+    goal.current_amount += amount
 
     db.commit()
     db.refresh(goal)
