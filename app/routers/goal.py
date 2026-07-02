@@ -44,3 +44,14 @@ def update_goal(goal_id: int, goal_update: GoalUpdate, db: Session = Depends(get
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Goal not found")
     except goal_service.InvalidAmount:
         raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail="Invalid amount")
+    
+@router.post("/{goal_id}/deposit", response_model=GoalResponse)
+def deposit_to_goal(goal_id: int, user_id: int, amount: int, db: Session = Depends(get_db)):
+    try:
+        return goal_service.deposit_to_goal(goal_id=goal_id, user_id=user_id, amount=amount, db=db)
+    except goal_service.GoalNotFound:
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Goal not found")
+    except goal_service.InvalidAmount:
+        raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail="Invalid amount")
+    except goal_service.GoalTargetAmountExceeded:
+        raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail="Deposit exceeds target amount")
