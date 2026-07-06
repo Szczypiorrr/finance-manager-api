@@ -1,9 +1,9 @@
 from fastapi import APIRouter, Depends, HTTPException, status
-from schemas.income import IncomeResponse, IncomeCreate, IncomeUpdate
+from app.schemas.income import IncomeResponse, IncomeCreate, IncomeUpdate
 from sqlalchemy.orm import Session
-from core.database import get_db
-import services.income as income_service
-import services.account as account_service
+from app.core.database import get_db
+import app.services.income as income_service
+import app.services.account as account_service
 from datetime import datetime
 
 router = APIRouter(tags=["Incomes"], prefix="/incomes")

@@ -1,6 +1,6 @@
 from sqlalchemy import create_engine
 from sqlalchemy.orm import declarative_base, sessionmaker
-from core.config import get_db_url
+from app.core.config import get_db_url
 
 db_url = get_db_url()
 
@@ -18,5 +18,5 @@ def get_db():
         db.close()
 
 def init_db():
-    import models
+    import app.models
     Base.metadata.create_all(bind=engine)

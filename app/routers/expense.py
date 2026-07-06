@@ -1,11 +1,11 @@
 from fastapi import APIRouter, Depends, HTTPException, status, Query
-from schemas.expense import ExpenseResponse, ExpenseCreate, ExpenseUpdate
+from app.schemas.expense import ExpenseResponse, ExpenseCreate, ExpenseUpdate
 from sqlalchemy.orm import Session
-from core.database import get_db
-import services.expense as expense_service
-import services.user as user_service
-import services.account as account_service
-import services.category as category_service
+from app.core.database import get_db
+import app.services.expense as expense_service
+import app.services.user as user_service
+import app.services.account as account_service
+import app.services.category as category_service
 from datetime import datetime
 
 router = APIRouter(tags=["Expenses"], prefix="/expenses")

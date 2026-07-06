@@ -1,15 +1,15 @@
 from fastapi import FastAPI
 
-from core.database import init_db
+from app.core.database import init_db
 
-from routers.user import router as user_router
-from routers.account import router as account_router
-from routers.category import router as category_router
-from routers.expense import router as expense_router
-from routers.income import router as income_router
-from routers.budget import router as budget_router
-from routers.goal import router as goal_router
-from routers.stats import router as stats_router
+from app.routers.user import router as user_router
+from app.routers.account import router as account_router
+from app.routers.category import router as category_router
+from app.routers.expense import router as expense_router
+from app.routers.income import router as income_router
+from app.routers.budget import router as budget_router
+from app.routers.goal import router as goal_router
+from app.routers.stats import router as stats_router
 
 app = FastAPI(
     title="Personal Finance API",

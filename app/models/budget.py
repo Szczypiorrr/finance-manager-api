@@ -1,6 +1,6 @@
 from sqlalchemy import Column, Float, Integer, ForeignKey
 from sqlalchemy.orm import relationship
-from models.base_model import BaseModel
+from app.models.base_model import BaseModel
 
 class Budget(BaseModel):
     __tablename__ = "budgets"

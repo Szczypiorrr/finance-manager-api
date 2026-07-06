@@ -1,6 +1,6 @@
 from sqlalchemy import Column, String, Float, DateTime, Integer, ForeignKey
 from sqlalchemy.orm import relationship
-from models.base_model import BaseModel
+from app.models.base_model import BaseModel
 
 class Income(BaseModel):
     __tablename__ = "incomes"

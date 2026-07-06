@@ -1,12 +1,11 @@
-from models.income import Income
-from schemas.income import IncomeCreate, IncomeUpdate
+from app.models.income import Income
+from app.schemas.income import IncomeCreate, IncomeUpdate
 from sqlalchemy.orm import Session
-from services.account import get_account_by_id
+from app.services.account import get_account_by_id
 from datetime import datetime
-from helpers.datetime import current_datetime
-from helpers.validators import validate_amount
-from exceptions.income_exceptions import IncomeNotFound
-
+from app.helpers.datetime import current_datetime
+from app.helpers.validators import validate_amount
+from app.exceptions.income_exceptions import IncomeNotFound
 
 def get_incomes(db: Session, account_id: int | None = None, start_date: datetime | None = None, end_date: datetime | None = None, limit: int = 10, offset: int = 0):
     query = db.query(Income)

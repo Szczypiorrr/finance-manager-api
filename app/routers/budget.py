@@ -1,10 +1,10 @@
 from fastapi import APIRouter, Depends, HTTPException, status
-from schemas.budget import BudgetResponse, BudgetCreate, BudgetUpdate
+from app.schemas.budget import BudgetResponse, BudgetCreate, BudgetUpdate
 from sqlalchemy.orm import Session
-from core.database import get_db
-import services.budget as budget_service
-import services.user as user_service
-import services.category as category_service
+from app.core.database import get_db
+import app.services.budget as budget_service
+import app.services.user as user_service
+import app.services.category as category_service
 
 router = APIRouter(tags=["Budget"], prefix="/budgets")
 

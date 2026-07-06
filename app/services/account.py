@@ -1,10 +1,9 @@
-from models.account import Account
-from schemas.account import AccountUpdate
+from app.models.account import Account
+from app.schemas.account import AccountUpdate
 from sqlalchemy.orm import Session
-from services.user import get_user_by_id
-from helpers.validators import validate_amount
-from exceptions.account_exceptions import AccountNotFound, AccountAlreadyExists, InsufficientFunds, InvalidTransfer
-
+from app.services.user import get_user_by_id
+from app.helpers.validators import validate_amount
+from app.exceptions.account_exceptions import AccountNotFound, AccountAlreadyExists, InsufficientFunds, InvalidTransfer
 
 def get_accounts(db: Session, user_id: int = None, limit: int = 10, offset: int = 0):
     query = db.query(Account)

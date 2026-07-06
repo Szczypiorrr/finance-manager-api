@@ -1,6 +1,6 @@
-from models.user import User
+from app.models.user import User
 from sqlalchemy.orm import Session
-from exceptions.user_exceptions import UserNotFound, UserAlreadyExists
+from app.exceptions.user_exceptions import UserNotFound, UserAlreadyExists
 
 def get_users(db: Session):
     return db.query(User).all()

@@ -1,9 +1,9 @@
 from fastapi import APIRouter, Depends, HTTPException, status
-from schemas.goal import GoalResponse, GoalCreate, GoalUpdate
+from app.schemas.goal import GoalResponse, GoalCreate, GoalUpdate
 from sqlalchemy.orm import Session
-from core.database import get_db
-import services.goal as goal_service
-import services.user as user_service
+from app.core.database import get_db
+import app.services.goal as goal_service
+import app.services.user as user_service
 
 router = APIRouter(tags=["Goal"], prefix="/goals")
 

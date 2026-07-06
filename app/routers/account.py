@@ -1,9 +1,9 @@
 from fastapi import APIRouter, Depends, HTTPException, status
-from schemas.account import AccountResponse, AccountCreate, AccountUpdate, AccountDeposit, AccountWithdraw, AccountTransfer, AccountTransferResponse
+from app.schemas.account import AccountResponse, AccountCreate, AccountUpdate, AccountDeposit, AccountWithdraw, AccountTransfer, AccountTransferResponse
 from sqlalchemy.orm import Session
-from core.database import get_db
-import services.account as account_service
-import services.user as user_service
+from app.core.database import get_db
+import app.services.account as account_service
+import app.services.user as user_service
 
 router = APIRouter(tags=["Accounts"], prefix="/accounts")
 

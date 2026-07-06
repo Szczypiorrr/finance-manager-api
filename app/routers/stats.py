@@ -1,9 +1,9 @@
 from fastapi import APIRouter, Depends, HTTPException, status
-from schemas.stats import MonthlyStatsResponse , ByCategoryStatsResponse, MonthlyTrendResponse, TopExpensesResponse
+from app.schemas.stats import MonthlyStatsResponse, ByCategoryStatsResponse, MonthlyTrendResponse, TopExpensesResponse
 from sqlalchemy.orm import Session
-from core.database import get_db
-import services.stats as stats_service
-import services.user as user_service
+from app.core.database import get_db
+import app.services.stats as stats_service
+import app.services.user as user_service
 
 router = APIRouter(tags=["Stats"], prefix="/stats")
 

@@ -1,9 +1,9 @@
 from sqlalchemy.orm import Session
-from services.user import get_user_by_id
-from models.goal import Goal
-from schemas.goal import GoalCreate, GoalUpdate
-from helpers.validators import validate_amount
-from exceptions.goal_exceptions import GoalNotFound, GoalAlreadyExists, GoalTargetAmountExceeded
+from app.services.user import get_user_by_id
+from app.models.goal import Goal
+from app.schemas.goal import GoalCreate, GoalUpdate
+from app.helpers.validators import validate_amount
+from app.exceptions.goal_exceptions import GoalNotFound, GoalAlreadyExists, GoalTargetAmountExceeded
 
 def get_goals(db: Session, user_id: int = None, limit: int = 10, offset: int = 0):
     query = db.query(Goal)

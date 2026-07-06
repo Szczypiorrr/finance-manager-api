@@ -1,13 +1,12 @@
 from sqlalchemy.orm import Session
-from models.expense import Expense
-from schemas.expense import ExpenseCreate, ExpenseUpdate
-from services.account import get_account_by_id
-from services.category import get_category_by_id
+from app.models.expense import Expense
+from app.schemas.expense import ExpenseCreate, ExpenseUpdate
+from app.services.account import get_account_by_id
+from app.services.category import get_category_by_id
 from datetime import datetime
-from helpers.datetime import current_datetime
-from helpers.validators import validate_amount
-from exceptions.expense_exceptions import ExpenseNotFound
-
+from app.helpers.datetime import current_datetime
+from app.helpers.validators import validate_amount
+from app.exceptions.expense_exceptions import ExpenseNotFound
 
 def get_expenses(db: Session, account_id: int | None = None, category_id: int | None = None, start_date: datetime | None = None, end_date: datetime | None = None, limit: int = 10, offset: int = 0):
     query = db.query(Expense)

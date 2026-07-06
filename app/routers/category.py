@@ -1,8 +1,8 @@
 from fastapi import APIRouter, Depends, HTTPException, status
-from schemas.category import CategoryResponse, CategoryCreate, CategoryUpdate
+from app.schemas.category import CategoryResponse, CategoryCreate, CategoryUpdate
 from sqlalchemy.orm import Session
-from core.database import get_db
-import services.category as category_service
+from app.core.database import get_db
+import app.services.category as category_service
 
 router = APIRouter(tags=["Categories"], prefix="/categories")
 

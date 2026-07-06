@@ -1,11 +1,6 @@
 from sqlalchemy.orm import Session
-from models.category import Category
-
-class CategoryNotFound(Exception):
-    pass
-
-class CategoryAlreadyExists(Exception):
-    pass
+from app.models.category import Category
+from app.exceptions.category_exceptions import CategoryAlreadyExists, CategoryNotFound
 
 def get_categories(db: Session):
     return db.query(Category).all()

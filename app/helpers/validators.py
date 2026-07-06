@@ -1,4 +1,4 @@
-from exceptions.common_exceptions import InvalidAmount
+from app.exceptions.common_exceptions import InvalidAmount
 
 def validate_amount(amount):
     if amount <= 0:
