@@ -38,7 +38,7 @@ source venv/bin/activate
 ```bash
 pip install -r requirements.txt
 ```
-### 6. Run application
+### 5. Run application
 ```bash
 uvicorn app.main:app --reload
 ```
