@@ -10,10 +10,14 @@ router = APIRouter(tags=["Users"], prefix="/users")
 
 @router.get("/", response_model=list[UserResponse])
 def read_users(db: Session = Depends(get_db)):
+    """Return all users."""
+
     return user_service.get_users(db=db)
 
 @router.get("/{user_id}", response_model=UserResponse)
 def read_user(user_id: int, db: Session = Depends(get_db)):
+    """Return a user by its ID."""
+
     try:
         return user_service.get_user_by_id(user_id=user_id, db=db)
     except UserNotFound:
@@ -22,6 +26,8 @@ def read_user(user_id: int, db: Session = Depends(get_db)):
 
 @router.post("/", response_model=UserResponse)
 def create_user(user: UserCreate, db: Session = Depends(get_db)):
+    """Create a new user."""
+
     try:
         return user_service.create_user(username=user.username, db=db)
     except UserAlreadyExists:
@@ -29,6 +35,8 @@ def create_user(user: UserCreate, db: Session = Depends(get_db)):
 
 @router.delete("/{user_id}", status_code=status.HTTP_204_NO_CONTENT)
 def delete_user(user_id: int, db: Session = Depends(get_db)):
+    """Delete a user."""
+
     try:
         return user_service.delete_user(user_id=user_id, db=db)
     except UserNotFound:
@@ -37,6 +45,8 @@ def delete_user(user_id: int, db: Session = Depends(get_db)):
 
 @router.put("/{user_id}", response_model=UserResponse)
 def update_user(user_id: int, user: UserUpdate, db: Session = Depends(get_db)):
+    """Update an existing user."""
+
     try:
         return user_service.update_user(user_id=user_id, username=user.username, db=db)
     except UserAlreadyExists:

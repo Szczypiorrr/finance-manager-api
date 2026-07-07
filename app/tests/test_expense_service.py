@@ -24,6 +24,8 @@ TestingSessionLocal = sessionmaker(bind=engine)
 
 @pytest.fixture
 def db():
+    """Creates a test database session."""
+
     Base.metadata.create_all(bind=engine)
 
     session = TestingSessionLocal()
@@ -35,6 +37,8 @@ def db():
     Base.metadata.drop_all(bind=engine)
 
 def test_create_expense_success(db):
+    """Creates an expense successfully."""
+
     # given
     user = create_user(username="testuser1", db=db)
     category = create_category(category=CategoryCreate(name="category1"), db=db)
@@ -58,6 +62,8 @@ def test_create_expense_success(db):
     assert expense.id is not None
 
 def test_get_all_expenses_empty_database(db):
+    """Returns empty list when no expenses exist."""
+
     # when
     expenses = get_expenses(db)
 
@@ -65,6 +71,8 @@ def test_get_all_expenses_empty_database(db):
     assert len(expenses) == 0
 
 def test_get_all_expenses(db):
+    """Returns all existing expenses."""
+
     # given
     user1 = create_user(username="testuser1", db=db)
     category1 = create_category(category=CategoryCreate(name="category1"), db=db)
@@ -120,6 +128,8 @@ def test_get_all_expenses(db):
 
 
 def test_filter_by_category(db):
+    """Filters expenses by category."""
+
     # given
     user1 = create_user(username="testuser1", db=db)
     category1 = create_category(category=CategoryCreate(name="category1"), db=db)
@@ -167,6 +177,8 @@ def test_filter_by_category(db):
     assert all(expense.category_id == category_id2 for expense in expenses_category2)
 
 def test_update_expense_success(db):
+    """Updates expense data successfully."""
+
     # given
     user = create_user(username="testuser1", db=db)
     category = create_category(category=CategoryCreate(name="category1"), db=db)
@@ -195,6 +207,8 @@ def test_update_expense_success(db):
     assert updated.amount == 200.0
 
 def test_delete_expense_success(db):
+    """Deletes expense successfully."""
+
     # given
     user = create_user(username="testuser1", db=db)
     category = create_category(category=CategoryCreate(name="category1"), db=db)
@@ -219,6 +233,8 @@ def test_delete_expense_success(db):
 
 
 def test_get_expense_not_found(db):
+    """Raises error when expense does not exist."""
+
     # when / then
     with pytest.raises(ExpenseNotFound):
         get_expense_by_id(expense_id=9999, db=db)

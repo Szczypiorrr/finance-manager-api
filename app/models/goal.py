@@ -3,6 +3,8 @@ from sqlalchemy.orm import relationship
 from app.models.base_model import BaseModel
 
 class Goal(BaseModel):
+    """Database model representing user financial goals."""
+
     __tablename__ = "goals"
 
     target_amount = Column(Integer)

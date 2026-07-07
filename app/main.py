@@ -11,6 +11,7 @@ from app.routers.budget import router as budget_router
 from app.routers.goal import router as goal_router
 from app.routers.stats import router as stats_router
 
+"""Creates the main FastAPI application."""
 app = FastAPI(
     title="Personal Finance API",
     description="A RESTful API for managing personal finances, including users, accounts, categories, expenses, incomes, budgets, goals, and statistics.",
@@ -28,8 +29,12 @@ app.include_router(stats_router)
 
 @app.on_event("startup")
 def startup():
+    """Initializes database on application startup."""
+
     init_db()
 
 @app.get("/")
 def root():
+    """Returns API status message."""
+
     return {"message": "Personal Finance API is running"}

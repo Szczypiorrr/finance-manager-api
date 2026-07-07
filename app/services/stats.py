@@ -13,6 +13,7 @@ from app.helpers.datetime import month_range
 from app.exceptions.account_exceptions import AccountNotFound
 
 def get_monthly_stats(db: Session, month: int | None = None, year: int | None = None):
+    """Returns income and expense statistics for a selected month."""
 
     if month is None:
         month = current_month()
@@ -42,11 +43,15 @@ def get_monthly_stats(db: Session, month: int | None = None, year: int | None = 
     }
 
 def get_stats_expenses_by_category(db: Session):
+    """Returns expenses grouped by category."""
+
     expenses_by_category = db.query(Expense.category_id, func.sum(Expense.amount).label("total_expenses")).group_by(Expense.category_id).all()
     
     return [{"category_name": get_category_by_id(category_id=category_id, db=db).name, "total_expenses": money(total_expenses)} for category_id, total_expenses in expenses_by_category]
 
 def get_stats_balance(db: Session, user_id: int | None = None, account_id: int | None = None):
+    """Calculates balance statistics for users and accounts."""
+
     if user_id and account_id:
         user = get_user_by_id(user_id=user_id, db=db)
         account = get_account_by_id(account_id=account_id, db=db)
@@ -96,6 +101,8 @@ def get_stats_balance(db: Session, user_id: int | None = None, account_id: int |
 
 
 def get_top_expenses(user_id: int | None, account_id: int | None, db: Session, limit: int = 10, offset: int = 0):
+    """Returns the highest expenses with related data."""
+
     if user_id and account_id:
         get_user_by_id(user_id=user_id, db=db)
         get_account_by_id(account_id=account_id, db=db)
@@ -131,6 +138,8 @@ def get_top_expenses(user_id: int | None, account_id: int | None, db: Session, l
 
 
 def get_monthly_trend(user_id: int | None, account_id: int | None, db: Session):
+    """Returns monthly expense trends."""
+
     if user_id and account_id:
         get_user_by_id(user_id=user_id, db=db)
         get_account_by_id(account_id=account_id, db=db)

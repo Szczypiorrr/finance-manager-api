@@ -3,6 +3,8 @@ from sqlalchemy.orm import relationship
 from app.models.base_model import BaseModel
 
 class Category(BaseModel):
+    """Database model representing expense categories."""
+
     __tablename__ = "categories"
 
     name = Column(String)

@@ -16,10 +16,14 @@ router = APIRouter(tags=["Expenses"], prefix="/expenses")
 
 @router.get("/", response_model=list[ExpenseResponse])
 def read_expenses(offset: int = 0, limit: int = Query(10, le=100), account_id: int | None = None, category_id: int | None = None, start_date: datetime | None = None, end_date: datetime | None = None, db: Session = Depends(get_db)):
+    """Return a list of expenses."""
+
     return expense_service.get_expenses(limit=limit, offset=offset, account_id=account_id, category_id=category_id, start_date=start_date, end_date=end_date, db=db)
 
 @router.get("/{expense_id}", response_model=ExpenseResponse)
 def read_expense(expense_id: int, db: Session = Depends(get_db)):
+    """Return an expense by its ID."""
+
     try:
         return expense_service.get_expense_by_id(expense_id=expense_id, db=db)
     except ExpenseNotFound:
@@ -27,6 +31,8 @@ def read_expense(expense_id: int, db: Session = Depends(get_db)):
     
 @router.post("/", response_model=ExpenseResponse)
 def create_expense(expense: ExpenseCreate, db: Session = Depends(get_db)):
+    """Create a new expense."""
+
     try:
         return expense_service.create_expense(expense=expense, db=db)
     except UserNotFound:
@@ -38,6 +44,8 @@ def create_expense(expense: ExpenseCreate, db: Session = Depends(get_db)):
 
 @router.delete("/{expense_id}", status_code=status.HTTP_204_NO_CONTENT)
 def delete_expense(expense_id: int, db: Session = Depends(get_db)):
+    """Delete an expense."""
+
     try:
         return expense_service.delete_expense(expense_id=expense_id, db=db)
     except ExpenseNotFound:
@@ -45,6 +53,8 @@ def delete_expense(expense_id: int, db: Session = Depends(get_db)):
     
 @router.put("/{expense_id}", response_model=ExpenseResponse)
 def update_expense(expense_id: int, expense_update: ExpenseUpdate, db: Session = Depends(get_db)):
+    """Update an existing expense."""
+
     try:
         return expense_service.update_expense(expense_id=expense_id, expense_update=expense_update, db=db)
     except ExpenseNotFound:

@@ -12,10 +12,14 @@ router = APIRouter(tags=["Budget"], prefix="/budgets")
 
 @router.get("/", response_model=list[BudgetResponse])
 def read_budgets(limit: int = 10, offset: int = 0, user_id: int = None, category_id: int = None, db: Session = Depends(get_db)):
+    """Return a list of budgets."""
+
     return budget_service.get_budgets(db=db, user_id=user_id, category_id=category_id, limit=limit, offset=offset)
 
 @router.get("/{budget_id}", response_model=BudgetResponse)
 def read_budget(budget_id: int, db: Session = Depends(get_db)):
+    """Return a budget by its ID."""
+
     try:
         return budget_service.get_budget_by_id(budget_id=budget_id, db=db)
     except BudgetNotFound:
@@ -23,6 +27,8 @@ def read_budget(budget_id: int, db: Session = Depends(get_db)):
     
 @router.post("/", response_model=BudgetResponse)
 def create_budget(budget: BudgetCreate, db: Session = Depends(get_db)):
+    """Create a new budget."""
+
     try:
         return budget_service.create_budget(budget=budget, db=db)
     except UserNotFound:
@@ -34,6 +40,8 @@ def create_budget(budget: BudgetCreate, db: Session = Depends(get_db)):
     
 @router.delete("/{budget_id}", status_code=status.HTTP_204_NO_CONTENT)
 def delete_budget(budget_id: int, db: Session = Depends(get_db)):
+    """Delete a budget."""
+
     try:
         return budget_service.delete_budget(budget_id=budget_id, db=db)
     except BudgetNotFound:
@@ -42,6 +50,8 @@ def delete_budget(budget_id: int, db: Session = Depends(get_db)):
     
 @router.put("/{budget_id}", response_model=BudgetResponse)
 def update_budget(budget_id: int, budget_update: BudgetUpdate, db: Session = Depends(get_db)):
+    """Update an existing budget."""
+
     try:
         return budget_service.update_budget(budget_id=budget_id, budget_update=budget_update, db=db)
     except BudgetNotFound:

@@ -3,6 +3,8 @@ from sqlalchemy.orm import relationship
 from app.models.base_model import BaseModel
 
 class Account(BaseModel):
+    """Database model representing user financial accounts."""
+    
     __tablename__ = "accounts"
 
     name = Column(String)

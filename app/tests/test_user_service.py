@@ -15,6 +15,8 @@ TestingSessionLocal = sessionmaker(bind=engine)
 
 @pytest.fixture
 def db():
+    """Creates a test database session."""
+
     Base.metadata.create_all(bind=engine)
 
     session = TestingSessionLocal()
@@ -26,6 +28,8 @@ def db():
     Base.metadata.drop_all(bind=engine)
 
 def test_get_user_success(db):
+    """Returns user by username."""
+
     # given
     username = "testuser"
     create_user(username=username, db=db)
@@ -38,6 +42,8 @@ def test_get_user_success(db):
     assert user.username == username
 
 def test_create_user_success(db):
+    """Creates a user successfully."""
+
     # given
     username = "testuser"
 
@@ -50,6 +56,8 @@ def test_create_user_success(db):
 
 
 def test_user_existing(db):
+    """Finds an existing user."""
+
     # given
     username = "existinguser"
 
@@ -62,6 +70,8 @@ def test_user_existing(db):
     assert user is not None
 
 def test_user_not_existing(db):
+    """Returns None for missing user."""
+
     # given
     username = "nonexistinguser"
     
@@ -72,6 +82,8 @@ def test_user_not_existing(db):
     assert user is None
 
 def test_create_user_duplicate_raises_exception(db):
+    """Prevents creating duplicate users."""
+
     # given
     username = "testuser"
 
@@ -82,6 +94,8 @@ def test_create_user_duplicate_raises_exception(db):
         create_user(username=username, db=db)
 
 def test_update_user_success(db):
+    """Updates username successfully."""
+
     # given
     user = create_user(username="old_name", db=db)
 
@@ -94,6 +108,8 @@ def test_update_user_success(db):
     assert updated_user.username == "new_name"
 
 def test_delete_user_success(db):
+    """Deletes user successfully."""
+
     # given
     user = create_user(username="to_delete", db=db)
 

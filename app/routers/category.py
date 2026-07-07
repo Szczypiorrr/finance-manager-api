@@ -9,10 +9,14 @@ router = APIRouter(tags=["Categories"], prefix="/categories")
 
 @router.get("/", response_model=list[CategoryResponse])
 def read_categories(db: Session = Depends(get_db)):
+    """Return all categories."""
+
     return category_service.get_categories(db=db)
 
 @router.get("/{category_id}", response_model=CategoryResponse)
 def read_category(category_id: int, db: Session = Depends(get_db)):
+    """Return a category by its ID."""
+
     try:
         return category_service.get_category_by_id(category_id=category_id, db=db)
     except CategoryNotFound:
@@ -20,6 +24,8 @@ def read_category(category_id: int, db: Session = Depends(get_db)):
     
 @router.post("/", response_model=CategoryResponse)
 def create_category(category: CategoryCreate, db: Session = Depends(get_db)):
+    """Create a new category."""
+
     try:
         return category_service.create_category(category=category, db=db)
     except CategoryAlreadyExists:
@@ -27,6 +33,8 @@ def create_category(category: CategoryCreate, db: Session = Depends(get_db)):
     
 @router.delete("/{category_id}", status_code=status.HTTP_204_NO_CONTENT)
 def delete_category(category_id: int, db: Session = Depends(get_db)):
+    """Delete a category."""
+
     try:
         return category_service.delete_category(category_id=category_id, db=db)
     except CategoryNotFound:
@@ -34,6 +42,8 @@ def delete_category(category_id: int, db: Session = Depends(get_db)):
     
 @router.put("/{category_id}", response_model=CategoryResponse)
 def update_category(category_id: int, category: CategoryUpdate, db: Session = Depends(get_db)):
+    """Update an existing category."""
+
     try:
         return category_service.update_category(category_id=category_id, category=category, db=db)
     except CategoryNotFound:

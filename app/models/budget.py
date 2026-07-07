@@ -3,6 +3,8 @@ from sqlalchemy.orm import relationship
 from app.models.base_model import BaseModel
 
 class Budget(BaseModel):
+    """Database model representing user budgets."""
+
     __tablename__ = "budgets"
 
     limit_amount = Column(Float)

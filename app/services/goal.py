@@ -6,6 +6,8 @@ from app.helpers.validators import validate_amount
 from app.exceptions.goal_exceptions import GoalNotFound, GoalAlreadyExists, GoalTargetAmountExceeded
 
 def get_goals(db: Session, user_id: int = None, limit: int = 10, offset: int = 0):
+    """Return a list of goals."""
+
     query = db.query(Goal)
 
     if user_id is not None:
@@ -14,6 +16,8 @@ def get_goals(db: Session, user_id: int = None, limit: int = 10, offset: int = 0
     return query.limit(limit).offset(offset).all()
 
 def get_goal_by_id(goal_id: int, db: Session):
+    """Return a goal by its ID."""
+
     goal = db.query(Goal).where(Goal.id == goal_id).first()
 
     if not goal:
@@ -22,9 +26,13 @@ def get_goal_by_id(goal_id: int, db: Session):
     return goal
 
 def get_goal_by_name(name: str, db: Session):
+    """Return a goal by its name."""
+
     return db.query(Goal).where(Goal.name == name).first()
 
 def create_goal(goal: GoalCreate, db: Session):
+    """Create a new goal."""
+
     get_user_by_id(user_id=goal.user_id, db=db)
 
     validate_amount(goal.target_amount)
@@ -46,6 +54,8 @@ def create_goal(goal: GoalCreate, db: Session):
     return goal_db
 
 def delete_goal(goal_id: int, db: Session):
+    """Delete a goal."""
+
     goal = get_goal_by_id(goal_id=goal_id, db=db)
 
     db.delete(goal)
@@ -54,6 +64,8 @@ def delete_goal(goal_id: int, db: Session):
     return
 
 def update_goal(goal_id: int, goal_update: GoalUpdate, db: Session):
+    """Update an existing goal."""
+
     goal = get_goal_by_id(goal_id=goal_id, db=db)
 
     if goal_update.name is not None:
@@ -75,6 +87,8 @@ def update_goal(goal_id: int, goal_update: GoalUpdate, db: Session):
     return goal
 
 def deposit_to_goal(goal_id: int, user_id: int, amount: int, db: Session):
+    """Deposit money into a goal."""
+
     goal = get_goal_by_id(goal_id=goal_id, db=db)
 
     if goal.user_id != user_id:

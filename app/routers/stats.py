@@ -11,14 +11,20 @@ router = APIRouter(tags=["Stats"], prefix="/stats")
 
 @router.get("/monthly", response_model=MonthlyStatsResponse)
 def read_monthly_stats(month: int | None = None, year: int | None = None, db: Session = Depends(get_db)):
+    """Return monthly income and expense statistics."""
+
     return stats_service.get_monthly_stats(month=month, year=year, db=db)
 
 @router.get("/by-category", response_model=list[ByCategoryStatsResponse])
 def read_stats_by_category(db: Session = Depends(get_db)):
+    """Return expense statistics grouped by category."""
+
     return stats_service.get_stats_expenses_by_category(db=db)
 
 @router.get("/balance")
 def read_stats_balance(user_id: int | None = None, account_id: int | None = None, db: Session = Depends(get_db)):
+    """Return the current balance statistics."""
+
     try:
         return stats_service.get_stats_balance(user_id=user_id, account_id=account_id, db=db)
     except UserNotFound:
@@ -28,6 +34,8 @@ def read_stats_balance(user_id: int | None = None, account_id: int | None = None
     
 @router.get("/top-expenses", response_model=list[TopExpensesResponse])
 def read_top_expenses(limit: int = 10, offset: int = 0, user_id: int | None = None, account_id: int | None = None, db: Session = Depends(get_db)):
+    """Return the highest expenses."""
+
     try:
         return stats_service.get_top_expenses(limit=limit, offset=offset, user_id=user_id, account_id=account_id, db=db)
     except UserNotFound:
@@ -37,6 +45,8 @@ def read_top_expenses(limit: int = 10, offset: int = 0, user_id: int | None = No
     
 @router.get("/monthly-trend", response_model=list[MonthlyTrendResponse])
 def read_monthly_trend(user_id: int | None = None, account_id: int | None = None, db: Session = Depends(get_db)):
+    """Return monthly expense trends."""
+
     try:
         return stats_service.get_monthly_trend(user_id=user_id, account_id=account_id, db=db)
     except UserNotFound:

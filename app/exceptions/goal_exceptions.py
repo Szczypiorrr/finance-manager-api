@@ -1,3 +1,6 @@
+"""Exceptions related to goal operations."""
+
+
 class GoalNotFound(Exception):
     pass
 

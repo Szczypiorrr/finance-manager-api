@@ -3,6 +3,8 @@ from sqlalchemy.orm import relationship
 from app.models.base_model import BaseModel
 
 class Income(BaseModel):
+    """Database model representing user income records."""
+
     __tablename__ = "incomes"
 
     amount = Column(Float)

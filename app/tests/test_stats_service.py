@@ -26,14 +26,22 @@ TestingSessionLocal = sessionmaker(bind=engine)
 
 @pytest.fixture
 def db():
+    """Creates a test database session."""
+
     Base.metadata.create_all(bind=engine)
+
     session = TestingSessionLocal()
+
     yield session
+
     session.close()
+
     Base.metadata.drop_all(bind=engine)
 
 
 def test_get_monthly_stats_basic(db):
+    """Returns monthly income and expense statistics."""
+
     # given
     account = Account(name="acc1", user_id=1)
     db.add(account)
@@ -56,6 +64,8 @@ def test_get_monthly_stats_basic(db):
 
 
 def test_get_stats_expenses_by_category(db):
+    """Groups expenses by category."""
+
     # given
     category = Category(name="Food")
     db.add(category)
@@ -77,6 +87,8 @@ def test_get_stats_expenses_by_category(db):
 
 
 def test_get_stats_balance_base(db):
+    """Returns empty balance statistics."""
+
     # when
     result = get_stats_balance(db)
 
@@ -87,6 +99,8 @@ def test_get_stats_balance_base(db):
 
 
 def test_get_top_expenses_basic(db):
+    """Returns expenses sorted by amount."""
+
     # given
     account = Account(name="acc1", user_id=1)
     category = Category(name="Food")
@@ -109,6 +123,8 @@ def test_get_top_expenses_basic(db):
 
 
 def test_get_monthly_trend_basic(db):
+    """Returns monthly expense trends."""
+
     # given
     account = Account(name="acc1", user_id=1)
     db.add(account)

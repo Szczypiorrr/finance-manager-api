@@ -6,6 +6,8 @@ from app.helpers.validators import validate_amount
 from app.exceptions.account_exceptions import AccountNotFound, AccountAlreadyExists, InsufficientFunds, InvalidTransfer
 
 def get_accounts(db: Session, user_id: int = None, limit: int = 10, offset: int = 0):
+    """Return a list of accounts."""
+
     query = db.query(Account)
     if user_id is not None:
         query = query.where(Account.user_id == user_id)
@@ -13,6 +15,8 @@ def get_accounts(db: Session, user_id: int = None, limit: int = 10, offset: int 
     return query.limit(limit).offset(offset).all()
 
 def get_account_by_id(account_id: int, db: Session):
+    """Return an account by its ID."""
+
     account = db.query(Account).where(Account.id == account_id).first()
 
     if not account:
@@ -21,9 +25,13 @@ def get_account_by_id(account_id: int, db: Session):
     return account
 
 def get_account_by_name(account_name: str, db: Session):
+    """Return an account by its name."""
+
     return db.query(Account).where(Account.name == account_name).first()
 
 def create_account(account: Account, db: Session):
+    """Create a new account."""
+
     if get_account_by_name(account_name=account.name, db=db):
         raise AccountAlreadyExists()
 
@@ -38,6 +46,8 @@ def create_account(account: Account, db: Session):
     return account_db
 
 def delete_account(account_id: int, db: Session):
+    """Delete an account."""
+
     account = get_account_by_id(account_id=account_id, db=db)
 
     db.delete(account)
@@ -46,6 +56,8 @@ def delete_account(account_id: int, db: Session):
     return
 
 def update_account(account_id: int, account_update: AccountUpdate, db: Session):
+    """Update an existing account."""
+
     account = get_account_by_id(account_id=account_id, db=db)
 
     if account_update.name == account.name:
@@ -63,6 +75,8 @@ def update_account(account_id: int, account_update: AccountUpdate, db: Session):
     return account
 
 def deposit_to_account(account_id: int, amount: float, db: Session):
+    """Deposit money into an account."""
+
     account = get_account_by_id(account_id=account_id, db=db)
 
     validate_amount(amount)
@@ -75,6 +89,8 @@ def deposit_to_account(account_id: int, amount: float, db: Session):
     return account
 
 def withdraw_from_account(account_id: int, amount: float, db: Session):
+    """Withdraw money from an account."""
+
     account = get_account_by_id(account_id=account_id, db=db)
 
     validate_amount(amount)
@@ -90,6 +106,8 @@ def withdraw_from_account(account_id: int, amount: float, db: Session):
     return account
 
 def transfer_between_accounts(sender_id: int, receiver_id: int, amount: float, db: Session):
+    """Transfer money between two accounts."""
+
     validate_amount(amount)
 
     sender_account = get_account_by_id(account_id=sender_id, db=db)

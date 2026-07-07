@@ -3,6 +3,8 @@ from sqlalchemy.orm import relationship
 from app.models.base_model import BaseModel
 
 class Expense(BaseModel):
+    """Database model representing user expenses."""
+
     __tablename__ = "expenses"
 
     amount = Column(Float)

@@ -8,6 +8,8 @@ from app.helpers.validators import validate_amount
 from app.exceptions.income_exceptions import IncomeNotFound
 
 def get_incomes(db: Session, account_id: int | None = None, start_date: datetime | None = None, end_date: datetime | None = None, limit: int = 10, offset: int = 0):
+    """Returns incomes with optional filters and pagination."""
+
     query = db.query(Income)
 
     if account_id is not None:
@@ -22,6 +24,8 @@ def get_incomes(db: Session, account_id: int | None = None, start_date: datetime
     return query.limit(limit).offset(offset).all()
 
 def get_income_by_id(income_id: int, db: Session):
+    """Returns an income by its ID."""
+
     income = db.query(Income).where(Income.id == income_id).first()
 
     if not income:
@@ -30,6 +34,8 @@ def get_income_by_id(income_id: int, db: Session):
     return income
 
 def create_income(income: IncomeCreate, db: Session):
+    """Creates a new income record."""
+
     get_account_by_id(account_id=income.account_id, db=db)
 
     income_db = Income(
@@ -46,6 +52,8 @@ def create_income(income: IncomeCreate, db: Session):
     return income_db
 
 def delete_income(income_id: int, db: Session):
+    """Deletes an income by its ID."""
+
     income = get_income_by_id(income_id=income_id, db=db)
 
     db.delete(income)
@@ -54,6 +62,8 @@ def delete_income(income_id: int, db: Session):
     return
 
 def update_income(income_id: int, income_update: IncomeUpdate, db: Session):
+    """Updates income data."""
+
     income = get_income_by_id(income_id=income_id, db=db)
 
     if income_update.amount is not None:

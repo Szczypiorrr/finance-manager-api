@@ -1,3 +1,6 @@
+"""Exceptions related to user operations."""
+
+
 class UserNotFound(Exception):
     pass
 

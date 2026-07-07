@@ -1,3 +1,6 @@
+"""Exceptions related to account operations."""
+
+
 class AccountNotFound(Exception):
     pass
 

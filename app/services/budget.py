@@ -9,6 +9,8 @@ from app.helpers.validators import validate_amount
 from app.exceptions.budget_exceptions import BudgetNotFound, BudgetAlreadyExists
 
 def get_budgets(db: Session, user_id: int = None, category_id: int = None, limit: int = 10, offset: int = 0):
+    """Return a list of budgets."""
+
     query = db.query(Budget)
 
     if user_id is not None:
@@ -20,6 +22,8 @@ def get_budgets(db: Session, user_id: int = None, category_id: int = None, limit
     return query.limit(limit).offset(offset).all()
 
 def get_budget_by_id(budget_id: int, db: Session):
+    """Return a budget by its ID."""
+
     budget = db.query(Budget).where(Budget.id == budget_id).first()
 
     if not budget:
@@ -28,9 +32,13 @@ def get_budget_by_id(budget_id: int, db: Session):
     return budget
 
 def get_budget_by_period(user_id: int, category_id: int, month: int, year: int, db: Session):
+    """Return a budget for the given period."""
+
     return db.query(Budget).where(and_(Budget.user_id == user_id, Budget.category_id == category_id, Budget.month == month, Budget.year == year)).first()
 
 def create_budget(budget: BudgetCreate, db: Session):
+    """Create a new budget."""
+
     get_user_by_id(user_id=budget.user_id, db=db)
     get_category_by_id(category_id=budget.category_id, db=db)
 
@@ -52,6 +60,8 @@ def create_budget(budget: BudgetCreate, db: Session):
     return budget_db
 
 def delete_budget(budget_id: int, db: Session):
+    """Delete a budget."""
+
     budget = get_budget_by_id(budget_id=budget_id, db=db)
 
     db.delete(budget)
@@ -60,6 +70,8 @@ def delete_budget(budget_id: int, db: Session):
     return
 
 def update_budget(budget_id: int, budget_update: BudgetUpdate, db: Session):
+    """Update an existing budget."""
+
     budget = get_budget_by_id(budget_id=budget_id, db=db)
 
     validate_amount(budget_update.limit_amount)

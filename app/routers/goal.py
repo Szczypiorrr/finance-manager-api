@@ -11,10 +11,14 @@ router = APIRouter(tags=["Goal"], prefix="/goals")
 
 @router.get("/", response_model=list[GoalResponse])
 def read_goals(limit: int = 10, offset: int = 0, user_id: int = None, db: Session = Depends(get_db)):
+    """Return a list of goals."""
+
     return goal_service.get_goals(db=db, user_id=user_id, limit=limit, offset=offset)
 
 @router.get("/{goal_id}", response_model=GoalResponse)
 def read_goal(goal_id: int, db: Session = Depends(get_db)):
+    """Return a goal by its ID."""
+
     try:
         return goal_service.get_goal_by_id(goal_id=goal_id, db=db)
     except GoalNotFound:
@@ -22,6 +26,8 @@ def read_goal(goal_id: int, db: Session = Depends(get_db)):
     
 @router.post("/", response_model=GoalResponse)
 def create_goal(goal: GoalCreate, db: Session = Depends(get_db)):
+    """Create a new goal."""
+
     try:
         return goal_service.create_goal(goal=goal, db=db)
     except user_service.UserNotFound:
@@ -33,6 +39,8 @@ def create_goal(goal: GoalCreate, db: Session = Depends(get_db)):
     
 @router.delete("/{goal_id}", status_code=status.HTTP_204_NO_CONTENT)
 def delete_goal(goal_id: int, db: Session = Depends(get_db)):
+    """Delete a goal."""
+
     try:
         return goal_service.delete_goal(goal_id=goal_id, db=db)
     except GoalNotFound:
@@ -40,6 +48,8 @@ def delete_goal(goal_id: int, db: Session = Depends(get_db)):
     
 @router.put("/{goal_id}", response_model=GoalResponse)
 def update_goal(goal_id: int, goal_update: GoalUpdate, db: Session = Depends(get_db)):
+    """Update an existing goal."""
+
     try:
         return goal_service.update_goal(goal_id=goal_id, goal_update=goal_update, db=db)
     except GoalNotFound:
@@ -49,6 +59,8 @@ def update_goal(goal_id: int, goal_update: GoalUpdate, db: Session = Depends(get
     
 @router.post("/{goal_id}/deposit", response_model=GoalResponse)
 def deposit_to_goal(goal_id: int, user_id: int, amount: int, db: Session = Depends(get_db)):
+    """Deposit money into a goal."""
+
     try:
         return goal_service.deposit_to_goal(goal_id=goal_id, user_id=user_id, amount=amount, db=db)
     except GoalNotFound:
